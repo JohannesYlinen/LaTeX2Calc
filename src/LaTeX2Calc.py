@@ -67,6 +67,8 @@ historyLen = settings_manager.load_variable("historyLen", 0, int)
 # window pos
 windowPos = settings_manager.load_variable("windowPos", None, QPoint)
 windowDimensions = settings_manager.load_variable("windowDimensions", (650, 450), tuple)
+if isinstance(windowDimensions, dict):
+    windowDimensions = (650, 450)
 
 # paste text
 def paste_clipboard_text():
@@ -142,6 +144,7 @@ def copy_to_clipboard():
         history[latex] = translation
         historyLen += 1
 
+        # delete oldest copy if history lenght exceeds 100
         if historyLen > 100:
             del history[next(iter(history))]
             historyLen -= 1
@@ -806,7 +809,7 @@ class MainWindow(QWidget):
     def paintEvent(self, event):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.Antialiasing)
-        painter.setBrush(QBrush(QColor(self.color)))
+        painter.setBrush(QBrush(QColor(self.color))) # valikkojen default color "#0b0f13", ikkunan "black"
         painter.setPen(Qt.NoPen)
         painter.drawRoundedRect(self.rect(), 10,10)
 
@@ -1079,6 +1082,7 @@ class MainWindow(QWidget):
         
         info_button.move(info_button.x(), 10+resizeBorderWidth)
         about_button.move(about_button.x(), 10+resizeBorderWidth)
+        # määritä asetusvalikon sijainnit resizeBorderWidth + backscreensmall.width() + 40
 
         contentMargin = 20
         mainPadding = 10
@@ -1170,7 +1174,7 @@ class InfoWindow(QWidget):
         header_label.setAlignment(Qt.AlignCenter)
         scroll_layout.addWidget(header_label)
         
-        text_label = QLabel("""v2.0.0
+        text_label = QLabel("""v2.0.1
 (PyQt5)
 """)
         text_label.setAlignment(Qt.AlignCenter)
@@ -1233,7 +1237,7 @@ class RoundedWidget(QWidget):
     def paintEvent(self, event):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.Antialiasing)
-        painter.setBrush(QBrush(QColor(self.color)))
+        painter.setBrush(QBrush(QColor(self.color))) # sel. def. col. "#0b0f13", win. "black"
         painter.setPen(Qt.NoPen)
         painter.drawRoundedRect(self.rect(), 10,10)
 
@@ -1850,6 +1854,7 @@ def saveSettings(windowClosed=False):
     settings_manager = SettingsManager()
 
     # Create a dictionary to store variable names and values
+
     variables_to_save = {
 
         # settings
