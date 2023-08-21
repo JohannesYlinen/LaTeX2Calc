@@ -626,11 +626,13 @@ def chooseColors(inverse_theme):
 
         QCheckBox::indicator:unchecked {
             border: 2px solid """ + WHITE + """;
+            border-radius: 3px;
             background-color: """ + alphaWhite + """;
         }
 
         QCheckBox::indicator:checked {
             border: 2px solid """ + WHITE + """;
+            border-radius: 3px;
             background-color: """ + text + """;
         }
         """)
@@ -1174,7 +1176,7 @@ class InfoWindow(QWidget):
         header_label.setAlignment(Qt.AlignCenter)
         scroll_layout.addWidget(header_label)
         
-        text_label = QLabel("""v2.0.1
+        text_label = QLabel("""v2.0.2
 (PyQt5)
 """)
         text_label.setAlignment(Qt.AlignCenter)
@@ -1586,7 +1588,7 @@ resizeBorderWidth = 10
 windowSplitFactor = (440-15)/(670)
 window = MainWindow("black", resizeBorderWidth)
 window.setWindowTitle("LaTeX2Calc")
-window.setMinimumSize(550, 410)
+window.setMinimumSize(605, 410)
 window.setGeometry(0, 0, windowDimensions[0], windowDimensions[1])
 if windowPos:
     window.move(windowPos)
@@ -1697,17 +1699,21 @@ draggableBar = DraggableWidget(window)
 draggableBar.setGeometry(0, 0, 800, 55)
 
 move = -20-92
+info_button = ToolButton(window, (384+move,10), width=35, height=35, text="🛈")
+info_button.addStyle(selection_off_style + "QPushButton {font-size: 30px; }")
+
+
 info_border = RoundedWidgetBorder(window, color="#192328")
-info_border.setGeometry(319+move-border_width, 50-border_width, 322+border_width*2, 350+border_width*2)
+info_border.setGeometry(info_button.x()-border_width, 50-border_width, 322+border_width*2, 350+border_width*2)
 info_border.hide()
 
 info_page = RoundedWidget(window, color="0b0f13")
-info_page.setGeometry(319+move, 50, 322, 350)
+info_page.setGeometry(info_button.x(), 50, 322, 350)
 info_page.hide()
 
 fontStyle = "background-color: transparent; color: white; font-size: 25px;"
 
-header_x = 326+move
+header_x = info_button.x()+10
 header_y = 55
 header_text = textArea(window, "Shortcuts", header_x, header_y, fontStyle)
 header_text.hide()
@@ -1723,7 +1729,7 @@ info_text.hide()
 action_x = info_x + 155
 action_y = info_y 
 text = "Quick translate\nPaste\nCopy\nSpeedCrunch\nTI-nspire\nConstants\nCoulomb const.\nTI e symbol\nTI i symbol\nTI gravity\nSolve\nd/dx\nStay on top\nReset (restart req.)"
-action_text = textArea(window, text, info_x + 155, info_y, fontStyle, fontSize=9)
+action_text = textArea(window, text, action_x, info_y, fontStyle, fontSize=9)
 action_text.hide()
 
 theme_button = ToolButton(window, (132+move,10), width=90, height=35, text="Theme")
@@ -1738,8 +1744,8 @@ theme_selection.setGeometry(132+move, 50, 200, 85 + 150)
 theme_selection.hide()
 
 themeLine = lineEdit(window, 152+move, 60, 160, 30, closeSelection=False, name="themeLine")
-themeLine.addStyle("background-color: rgba(0,0,0,30); color: white; border-bottom: 1.5px solid white; border-radius: 0px", "HEX, RGB, COLOR" )
-
+themeLine.addStyle("background-color: rgba(0,0,0,50); color: white; border-bottom: 0px solid white; border-radius: 5px;", "HEX, RGB, COLOR" )
+                                                                            #     1.5
 if userInputColor:
     themeLine.setText(userInputColor)
 themeLine.hide()
@@ -1782,12 +1788,18 @@ history_text.hide()
 clear_history_button = IgnoringButton(window, (history_x+138, history_y-5), width=58, height=35, text="Clear", ignore=True)
 clear_history_button.addStyle(selection_off_style + "QPushButton {background-color: rgba(0, 0, 0, 200)}")
 clear_history_button.hide()
-
+"""
 info_button = ToolButton(window, (316+move,10), width=35, height=35, text="🛈")
 info_button.addStyle(selection_off_style + "QPushButton {font-size: 30px; }")
 
 about_button = ToolButton(window, (353+move,10), width=66, height=35, text="About")
 about_button.addStyle(selection_off_style)
+"""
+
+
+about_button = ToolButton(window, (316+move,10), width=66, height=35, text="About")
+about_button.addStyle(selection_off_style)
+
 
 minimize_button = button(window, (560, -5), width=55, height=55, text="‒")
 minimize_button.setFont(QFont("", 30))
