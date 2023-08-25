@@ -325,14 +325,14 @@ def history_list_clicked(reset=False):
         if historyLen == 0:
             history_selection.setGeometry(224+move, 50, 225, 50)
             history_border.setGeometry(224+move-border_width, 50-border_width, 225+border_width*2, 50+border_width*2)
-
             history_text.show()
         else:
             history_text.hide()
             update_history()
             
-            scroll.updateScrollClass()
+            # scroll.updateScrollClass()
             window.resizeEvent(event=None, backGround=False)
+            scroll.updateScrollClass()
             
         history_button.setStyleSheet(selection_on_style)
         history_border.show()
@@ -421,7 +421,7 @@ def TI_button_clicked():
 
 def constants_button_clicked():
     global constants_on
-    if not SC_on:
+    if not SC_on and TI_on:
         constants_on = not constants_on
         translate_input()
         if constants_on:
@@ -431,7 +431,7 @@ def constants_button_clicked():
 
 def coulomb_button_clicked():
     global coulomb_on
-    if not SC_on:
+    if not SC_on and TI_on:
         coulomb_on = not coulomb_on
         translate_input()
         if coulomb_on:
@@ -1058,8 +1058,7 @@ class MainWindow(QWidget):
                     scroll.updateScrollClass()
                     history_selection.setGeometry(history_selection.x(), history_selection.y(), round(225 + windowSplitFactor * (self.width() - start_x)), scroll.height()+20)
                     history_border.setGeometry(history_border.x(), history_border.y(), round(225 + windowSplitFactor * (self.width() - start_x) + 2), scroll.height()+2+20)
-
-                    
+                 
             else:
                 history_border.setGeometry(224+move-border_width, 50-border_width, 225+border_width*2, 50+border_width*2)
                 history_selection.setGeometry(224+move, 50, 225, 50)
@@ -1076,6 +1075,7 @@ class MainWindow(QWidget):
                         button.setFixedWidth(255-70)
             
             else:
+                
                 history_border.setGeometry(224+move-border_width, 50-border_width, 225+border_width*2, 50+border_width*2)
                 history_selection.setGeometry(224+move, 50, 225, 50)
 
@@ -1176,7 +1176,7 @@ class InfoWindow(QWidget):
         header_label.setAlignment(Qt.AlignCenter)
         scroll_layout.addWidget(header_label)
         
-        text_label = QLabel("""v2.0.2
+        text_label = QLabel("""v2.0.3
 (PyQt5)
 """)
         text_label.setAlignment(Qt.AlignCenter)
